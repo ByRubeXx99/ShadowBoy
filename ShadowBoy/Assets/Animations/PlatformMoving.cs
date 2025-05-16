@@ -6,31 +6,45 @@ public class PlatformMoving : MonoBehaviour
     private float waitTime;
     public Transform[] moveSpots;
     public float startWaitTime = 2;
-    private int i = 0;
+    private int currentWaypointIndex = 0;
     private bool playerOnPlatform = false;
+    private Vector2 previousPosition;
+    public Vector2 CurrentVelocity { get; private set; }
 
     private void Start()
     {
+        previousPosition = transform.position;
         waitTime = startWaitTime;
+
+        if (moveSpots == null || moveSpots.Length == 0)
+        {
+            Debug.LogError("PlatformMoving: No waypoints assigned to the platform!", this);
+            enabled = false; // Deshabilita el script si no hay waypoints
+            return;
+        }
     }
 
     private void Update()
     {
+        CurrentVelocity = (Vector2)transform.position - previousPosition;
+        previousPosition = transform.position;
+
         if (!playerOnPlatform) return;
 
-        transform.position = Vector2.MoveTowards(transform.position, moveSpots[i].position, speed * Time.deltaTime);
-        if(Vector2.Distance(transform.position, moveSpots[i].position) < 0.1f)
+        if(moveSpots == null || moveSpots.Length == 0 || currentWaypointIndex <0 || currentWaypointIndex >= moveSpots.Length)
+        {
+            return;
+        }
+        transform.position = Vector2.MoveTowards(transform.position, moveSpots[currentWaypointIndex].position, speed * Time.deltaTime);
+        if(Vector2.Distance(transform.position, moveSpots[currentWaypointIndex].position) < 0.1f)
         {
             if (waitTime <= 0)
             {
-                if (moveSpots[i] != moveSpots[moveSpots.Length - 1])
+                if (currentWaypointIndex < moveSpots.Length - 1)
                 {
-                    i++;
+                    currentWaypointIndex++;
                 }
-                else
-                {
-                    i = 0;
-                }
+                
                 waitTime = startWaitTime;
             }
             else
@@ -45,8 +59,13 @@ public class PlatformMoving : MonoBehaviour
         if (collision.collider.CompareTag("Player"))
         {
             collision.collider.transform.SetParent(transform);
+            MovementPlayer player = collision.collider.GetComponent<MovementPlayer>();
             playerOnPlatform = true;
-            
+            if (player != null)
+            {
+                player.SetPlayerOnMovingPlatform(true);
+                player.SetCurrentMovingPlatform(this);
+            }
 
         }
     }
@@ -55,7 +74,14 @@ public class PlatformMoving : MonoBehaviour
         if (collision.collider.CompareTag("Player"))
         {
             collision.collider.transform.SetParent(null);
-            playerOnPlatform = false; 
+            MovementPlayer player = collision.collider.GetComponent<MovementPlayer>();
+            playerOnPlatform = false;
+
+            if (player != null)
+            {
+                player.SetPlayerOnMovingPlatform(false);
+                player.SetCurrentMovingPlatform(null);
+            }
         }
 
     }

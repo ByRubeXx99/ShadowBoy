@@ -12,9 +12,13 @@ public class MovementPlayer : MonoBehaviour
     private float horizontalMovement = 0f;
     [SerializeField] private float velocityMovement;
     [SerializeField] private float smoothMovement;
-    private Vector2 velocity = Vector2.zero;
+    //private Vector2 velocity = Vector2.zero;
     private bool lookingRight = true;
 
+    // Ascensores
+    private PlatformMoving currentPlatform;
+    private bool playerOnMovingPlatform = false;
+    private Vector2 smoothDampVelocityRef;
 
 
     //Dash
@@ -65,15 +69,16 @@ public class MovementPlayer : MonoBehaviour
         rb2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         vecGravity = new Vector2(0, -Physics2D.gravity.y);
+        smoothDampVelocityRef = Vector2.zero;
     }
 
     private void Update()
     {
-        if (Mathf.Abs(horizontalMovement) > 0.1f)
+        if (Mathf.Abs(rb2D.linearVelocity.x) > 0.1f)
         {
             animator.SetFloat("Run", 1);
         }
-        else if (horizontalMovement < 0.1f)
+        else if (rb2D.linearVelocity.x < 0.1f)
         {
             animator.SetFloat("Run", 0);
         }
@@ -92,6 +97,11 @@ public class MovementPlayer : MonoBehaviour
       
         horizontalMovement = Input.GetAxisRaw("Horizontal") * velocityMovement;
 
+        if (!isWallJumping && !isDashing)
+        {
+            horizontalMovement = Input.GetAxisRaw("Horizontal") * velocityMovement;
+        }
+
         if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
         {
             StartCoroutine(Dash());
@@ -100,9 +110,6 @@ public class MovementPlayer : MonoBehaviour
         
 
         //Attack
-
-        
-
 
         if (Input.GetMouseButtonDown(0) && IsGrounded() == true)
         {
@@ -119,12 +126,12 @@ public class MovementPlayer : MonoBehaviour
             return; 
         }
         //Mover
-        Move(horizontalMovement * Time.fixedDeltaTime);
+        Move(horizontalMovement);
     }
     public void Jump()
     {
 
-        if (Input.GetButtonDown("Jump") && IsGrounded())
+        if (Input.GetButtonDown("Jump") && IsGrounded() && !playerOnMovingPlatform)
         {
             rb2D.linearVelocity = new Vector2(rb2D.linearVelocity.x, jumpPower);
             animator.SetBool("Jump", true);
@@ -132,7 +139,6 @@ public class MovementPlayer : MonoBehaviour
             jumpCounter = 0;
 
         }
-
 
         if (rb2D.linearVelocityY > 0 && isJumping)
         {
@@ -151,7 +157,11 @@ public class MovementPlayer : MonoBehaviour
                 currentJumpM = jumpMultiplier * (1 - t);
             }
 
-            rb2D.linearVelocity += vecGravity * currentJumpM * Time.deltaTime;
+            if (!isWallSliding && !isDashing)
+            {
+                rb2D.linearVelocity += vecGravity * currentJumpM * Time.deltaTime;
+            }
+
         }
 
         if (Input.GetButtonUp("Jump"))
@@ -159,23 +169,36 @@ public class MovementPlayer : MonoBehaviour
             isJumping = false;
             jumpCounter = 0;
 
-            if (rb2D.linearVelocityY > 0)
+            if (rb2D.linearVelocityY > 0 && !isWallSliding && !isDashing)
             {
                 rb2D.linearVelocity = new Vector2(rb2D.linearVelocityX, rb2D.linearVelocityY * 0.6f);
             }
         }
-        if (rb2D.linearVelocityY < 0)
+        if (rb2D.linearVelocityY < 0 && !isWallSliding && !isDashing)
         {
             rb2D.linearVelocity -= vecGravity * fallMultiplier * Time.deltaTime;
         }
-        animator.SetBool("Jump", !IsGrounded());
-        animator.SetFloat("yVelocity", rb2D.linearVelocityY);
+
+        if (!isDashing && !isWallSliding && !isWallJumping)
+        {
+            animator.SetBool("Jump", !IsGrounded());
+            animator.SetFloat("yVelocity", rb2D.linearVelocity.y);
+        }
+        else if (isWallSliding) 
+        {
+            animator.SetFloat("yVelocity", 0);
+        }
+
     }
     private void Move(float move)
     {
-        Vector2 targetVelocity = new Vector2 (move, rb2D.linearVelocityY);
-        rb2D.linearVelocity = Vector2.SmoothDamp (rb2D.linearVelocity, targetVelocity, ref velocity, smoothMovement);
-
+        Vector2 playerInputVelocity = new Vector2 (move, rb2D.linearVelocityY);
+        Vector2 targetVelocity = playerInputVelocity;
+        
+        //Ascensores
+        rb2D.linearVelocity = Vector2.SmoothDamp(rb2D.linearVelocity, targetVelocity, ref smoothDampVelocityRef, smoothMovement);
+        
+        
         if(move > 0 && !lookingRight)
         {
             
@@ -273,5 +296,44 @@ public class MovementPlayer : MonoBehaviour
         
         return Physics2D.OverlapCapsule(groundCheck.position, new Vector2(0.5f, 0.12f), CapsuleDirection2D.Horizontal, 0, groundLayer);
 
+    }
+
+    // Ascensores
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("MovingPlatform"))
+        {
+            PlatformMoving platform = collision.gameObject.GetComponent<PlatformMoving>();
+            { 
+                currentPlatform = platform;
+                SetPlayerOnMovingPlatform(true);
+                SetCurrentMovingPlatform(platform);
+            }
+            if (platform != null) { 
+                if (currentPlatform != platform)
+                {
+                    currentPlatform = platform; 
+                    SetCurrentMovingPlatform(platform); 
+                }
+            }
+        }
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (currentPlatform!= null && collision.gameObject.CompareTag("Moving Platform"))
+        {
+          SetPlayerOnMovingPlatform(false);
+          SetCurrentMovingPlatform(null);
+            
+        }
+    }
+    public void SetPlayerOnMovingPlatform (bool isOnPlatform)
+    {
+        playerOnMovingPlatform = isOnPlatform;
+    }
+    public void SetCurrentMovingPlatform (PlatformMoving platform)
+    {
+        currentPlatform = platform;
     }
 }
