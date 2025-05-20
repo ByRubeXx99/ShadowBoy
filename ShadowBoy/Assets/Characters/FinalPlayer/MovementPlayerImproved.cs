@@ -65,6 +65,11 @@ public class MovementPlayerImproved : MonoBehaviour
     [SerializeField] private LayerMask _groundLayer;
     #endregion
 
+    //Ascensores
+    private PlatformMoving currentPlatform;
+    private bool playerOnMovingPlatform = false;
+    private Vector2 smoothDampVelocityRef;
+
     private void Awake()
     {
         RB = GetComponent<Rigidbody2D>();
@@ -500,6 +505,47 @@ public class MovementPlayerImproved : MonoBehaviour
     }
     #endregion
 
+    #region  ASCENSORES
+
+    
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Moving Platform"))
+        {
+            PlatformMoving platform = collision.gameObject.GetComponent<PlatformMoving>();
+            {
+                currentPlatform = platform;
+                SetPlayerOnMovingPlatform(true);
+                SetCurrentMovingPlatform(platform);
+            }
+            if (platform != null)
+            {
+                if (currentPlatform != platform)
+                {
+                    currentPlatform = platform;
+                    SetCurrentMovingPlatform(platform);
+                }
+            }
+        }
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (currentPlatform != null && collision.gameObject.CompareTag("Moving Platform"))
+        {
+            SetPlayerOnMovingPlatform(false);
+            SetCurrentMovingPlatform(null);
+
+        }
+    }
+    public void SetPlayerOnMovingPlatform(bool isOnPlatform)
+    {
+        playerOnMovingPlatform = isOnPlatform;
+    }
+    public void SetCurrentMovingPlatform(PlatformMoving platform)
+    {
+        currentPlatform = platform;
+    }
+    #endregion
 
     #region CHECK METHODS
     public void CheckDirectionToFace(bool isMovingRight)
@@ -510,8 +556,9 @@ public class MovementPlayerImproved : MonoBehaviour
 
     private bool CanJump()
     {
-        return LastOnGroundTime > 0 && !IsJumping;
+        return LastOnGroundTime > 0 && !IsJumping && !playerOnMovingPlatform;
     }
+
 
     private bool CanWallJump()
     {

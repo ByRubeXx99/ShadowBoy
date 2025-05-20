@@ -19,7 +19,7 @@ public class PlatformMoving : MonoBehaviour
         if (moveSpots == null || moveSpots.Length == 0)
         {
             Debug.LogError("PlatformMoving: No waypoints assigned to the platform!", this);
-            enabled = false; // Deshabilita el script si no hay waypoints
+            enabled = false; 
             return;
         }
     }
@@ -59,7 +59,7 @@ public class PlatformMoving : MonoBehaviour
         if (collision.collider.CompareTag("Player"))
         {
             collision.collider.transform.SetParent(transform);
-            MovementPlayer player = collision.collider.GetComponent<MovementPlayer>();
+            MovementPlayerImproved player = collision.collider.GetComponent<MovementPlayerImproved>();
             playerOnPlatform = true;
             if (player != null)
             {
@@ -74,7 +74,7 @@ public class PlatformMoving : MonoBehaviour
         if (collision.collider.CompareTag("Player"))
         {
             collision.collider.transform.SetParent(null);
-            MovementPlayer player = collision.collider.GetComponent<MovementPlayer>();
+            MovementPlayerImproved player = collision.collider.GetComponent<MovementPlayerImproved>();
             playerOnPlatform = false;
 
             if (player != null)
