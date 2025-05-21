@@ -18,7 +18,6 @@ public class PlatformMoving : MonoBehaviour
 
         if (moveSpots == null || moveSpots.Length == 0)
         {
-            Debug.LogError("PlatformMoving: No waypoints assigned to the platform!", this);
             enabled = false; 
             return;
         }
