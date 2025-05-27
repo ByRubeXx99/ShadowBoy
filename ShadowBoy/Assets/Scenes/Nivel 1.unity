@@ -1242,7 +1242,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 00000000b5421a4cc95cacd9
+  m_ApplyToSortingLayers: 00000000b5421a4cc95cacd913ff9ab8
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -7271,11 +7271,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7945201245266885905, guid: 6eabe3ba962357140bdb910d99ecdfe6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.18
+      value: 5.4
       objectReference: {fileID: 0}
     - target: {fileID: 7945201245266885905, guid: 6eabe3ba962357140bdb910d99ecdfe6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -9.61
+      value: -22.36
       objectReference: {fileID: 0}
     - target: {fileID: 7945201245266885905, guid: 6eabe3ba962357140bdb910d99ecdfe6, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7944,7 +7944,7 @@ MonoBehaviour:
   m_Intensity: 5.58
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 00000000b5421a4cc95cacd9
+  m_ApplyToSortingLayers: 00000000b5421a4cc95cacd913ff9ab8
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -7998,6 +7998,7 @@ GameObject:
   - component: {fileID: 985289537}
   - component: {fileID: 985289536}
   - component: {fileID: 985289538}
+  - component: {fileID: 985289539}
   m_Layer: 0
   m_Name: Laser 1
   m_TagString: Untagged
@@ -8074,6 +8075,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 112784220}
+  - {fileID: 2128313333}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &985289538
@@ -8091,6 +8093,21 @@ MonoBehaviour:
   startTimeTilSpawn: 1
   lazer: {fileID: 6552844808265145981, guid: b08f411304515d744859841cdb5887ac, type: 3}
   whereToSpawn: {fileID: 112784220}
+--- !u!114 &985289539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 985289535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d1ffc6f74cd11f4e992fce0812ace46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startTimeTilSpawn: 1
+  lazer: {fileID: 4991648515186160959, guid: 415a8d0e0f856ec468945b6c7371b5a7, type: 3}
+  whereToSpawn: {fileID: 2128313333}
 --- !u!1 &987517639
 GameObject:
   m_ObjectHideFlags: 0
@@ -8143,7 +8160,7 @@ MonoBehaviour:
   m_Intensity: 2.47
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 00000000b5421a4cc95cacd9
+  m_ApplyToSortingLayers: 00000000b5421a4cc95cacd913ff9ab8
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -8882,7 +8899,7 @@ MonoBehaviour:
   m_Intensity: 2.29
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 00000000b5421a4cc95cacd9
+  m_ApplyToSortingLayers: 00000000b5421a4cc95cacd913ff9ab8
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -11510,7 +11527,7 @@ MonoBehaviour:
   m_Intensity: 0.42
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: c95cacd9
+  m_ApplyToSortingLayers: 0000000013ff9ab8c95cacd9
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -12289,6 +12306,37 @@ Transform:
   m_Children:
   - {fileID: 272705714}
   m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2128313332
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2128313333}
+  m_Layer: 0
+  m_Name: WhereToSpawn2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2128313333
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2128313332}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.0021224022, y: -3.8955784, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 985289537}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

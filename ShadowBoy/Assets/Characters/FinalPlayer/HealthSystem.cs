@@ -50,6 +50,30 @@ public class HealthSystem : MonoBehaviour
     public void CheckLights()
     {
         Light2D[] allLights = Object.FindObjectsByType<Light2D>(FindObjectsSortMode.None);
+        LazerDamage[] allLazer = Object.FindObjectsByType<LazerDamage>(FindObjectsSortMode.None);
+
+        foreach (LazerDamage lazer in allLazer)
+        {
+            if (!lazer.IsActive()) continue;
+
+            if (Vector2.Distance(transform.position, lazer.transform.position) > lightDetectionRadius)
+            {
+                continue;
+            }
+
+            Vector2 dir = (transform.position - lazer.transform.position).normalized;
+            RaycastHit2D hit = Physics2D.Raycast(lazer.transform.position, dir, lightDetectionRadius);
+
+            Debug.DrawRay(lazer.transform.position, dir * lightDetectionRadius, Color.red, checkInterval);
+
+            if (hit.collider != null && hit.collider.gameObject == gameObject)
+            {
+                TakeDamage(lazer.damagePerSecond * checkInterval);
+            }
+        }
+
+
+
 
         foreach (Light2D light in allLights)
         {
