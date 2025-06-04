@@ -4,12 +4,12 @@ using UnityEngine.SceneManagement;
 public class GameOver : MonoBehaviour
 {
     public GameObject gameOverPanel;
-    public float countdown = 5f;
+    public float countdown = 3f;
     public bool countdownStart = false;
 
     private void Update()
     {
-        if (countdownStart)
+        if (countdownStart == true)
         {
             countdown -= Time.deltaTime;
             ShowGameOver();
@@ -18,11 +18,13 @@ public class GameOver : MonoBehaviour
     public void ShowGameOver()
     {
         countdownStart = true;
-        if (countdown <= 0)
+        if(countdown <= 0)
         {
             gameOverPanel.SetActive(true);
             Time.timeScale = 0;
         }
+        
+        
     }
 
     public void RestartLevel()

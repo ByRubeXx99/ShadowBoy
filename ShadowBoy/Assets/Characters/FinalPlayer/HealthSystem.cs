@@ -84,7 +84,7 @@ public class HealthSystem : MonoBehaviour
         }
         flashCoroutine = StartCoroutine(FlashEffect());
 
-        if (currentHealth <= 0 && !isDead)
+        if (currentHealth <= 0)
         {
             Die();
         }
@@ -93,12 +93,15 @@ public class HealthSystem : MonoBehaviour
 
     IEnumerator FlashEffect()
     {
-        for (int i = 0; i < flashCount; i++)
+        if (!isDead)
         {
-            spriteRenderer.color = Color.red;
-            yield return new WaitForSeconds(flashDuration);
-            spriteRenderer.color = Color.white;
-            yield return new WaitForSeconds(flashDuration);
+            for (int i = 0; i < flashCount; i++)
+            {
+                spriteRenderer.color = Color.red;
+                yield return new WaitForSeconds(flashDuration);
+                spriteRenderer.color = Color.white;
+                yield return new WaitForSeconds(flashDuration);
+            }
         }
     }
 
@@ -108,7 +111,6 @@ public class HealthSystem : MonoBehaviour
         animator.SetBool("IsDead", true);
         GetComponent<MovementPlayerImproved>().isDead = true;
         FindAnyObjectByType<GameOver>().ShowGameOver();
-
     }
 
     public void ResetHealth()

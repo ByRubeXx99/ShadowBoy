@@ -8,6 +8,8 @@ public class Buttons : MonoBehaviour
     public bool isPlayerInside = false;
     public KeyCode interactionKey = KeyCode.E;
     public Light2D[] lights;
+    public LightHazard[] hazards;
+    public PolygonCollider2D[] polygons;
     public Lazer[] lazers;
     public PlatformMoving[] platforms;
     public StopZone[] stopzones;
@@ -49,6 +51,17 @@ public class Buttons : MonoBehaviour
         {
             light.enabled = !light.enabled;
         }
+        foreach (LightHazard light in hazards)
+        {
+            light.enabled = !light.enabled;
+
+            PolygonCollider2D collider = light.GetComponent<PolygonCollider2D>();
+            if (collider != null)
+            {
+                collider.enabled = !collider.enabled;
+            }
+        }
+        
     }
     void ShutDownLazers()
     {
