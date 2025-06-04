@@ -5,20 +5,25 @@ public class Lazer : MonoBehaviour
     private float timeTilSpawn;
 
     public float startTimeTilSpawn;
+    public bool isActivated = true;
 
     public GameObject lazer;
     public Transform whereToSpawn;
 
     private void Update()
     {
-        if (timeTilSpawn <= 0)
+        if (isActivated)
         {
-            Instantiate(lazer, whereToSpawn.position, whereToSpawn.rotation);
-            timeTilSpawn = startTimeTilSpawn;
+            if (timeTilSpawn <= 0)
+            {
+                Instantiate(lazer, whereToSpawn.position, whereToSpawn.rotation);
+                timeTilSpawn = startTimeTilSpawn;
+            }
+            else
+            {
+                timeTilSpawn -= Time.deltaTime;
+            }
         }
-        else
-        {
-            timeTilSpawn -= Time.deltaTime;
-        }
+            
     }
 }

@@ -16,6 +16,17 @@ public class LazerDamage : MonoBehaviour
     {
         return lightOn && lazer.activeInHierarchy;
     }
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (lightOn && other.CompareTag("Player"))
+        {
+            HealthSystem healthSystem = other.GetComponent<HealthSystem>();
+            if (healthSystem != null)
+            {
+                healthSystem.TakeDamage(damagePerSecond);
+            }
+        }
+    }
 }   
 
 

@@ -8,6 +8,7 @@ public class PlatformMoving : MonoBehaviour
     public float startWaitTime = 2;
     private int currentWaypointIndex = 0;
     private bool playerOnPlatform = false;
+    public bool isActivated;
     private Vector2 previousPosition;
     public Vector2 CurrentVelocity { get; private set; }
 
@@ -18,7 +19,7 @@ public class PlatformMoving : MonoBehaviour
 
         if (moveSpots == null || moveSpots.Length == 0)
         {
-            enabled = false; 
+            enabled = false;
             return;
         }
     }
@@ -28,27 +29,30 @@ public class PlatformMoving : MonoBehaviour
         CurrentVelocity = (Vector2)transform.position - previousPosition;
         previousPosition = transform.position;
 
-        if (!playerOnPlatform) return;
+        if (isActivated)
+        {
+            if (!playerOnPlatform) return;
 
-        if(moveSpots == null || moveSpots.Length == 0 || currentWaypointIndex <0 || currentWaypointIndex >= moveSpots.Length)
-        {
-            return;
-        }
-        transform.position = Vector2.MoveTowards(transform.position, moveSpots[currentWaypointIndex].position, speed * Time.deltaTime);
-        if(Vector2.Distance(transform.position, moveSpots[currentWaypointIndex].position) < 0.1f)
-        {
-            if (waitTime <= 0)
+            if (moveSpots == null || moveSpots.Length == 0 || currentWaypointIndex < 0 || currentWaypointIndex >= moveSpots.Length)
             {
-                if (currentWaypointIndex < moveSpots.Length - 1)
-                {
-                    currentWaypointIndex++;
-                }
-                
-                waitTime = startWaitTime;
+                return;
             }
-            else
+            transform.position = Vector2.MoveTowards(transform.position, moveSpots[currentWaypointIndex].position, speed * Time.deltaTime);
+            if (Vector2.Distance(transform.position, moveSpots[currentWaypointIndex].position) < 0.1f)
             {
-                waitTime -= Time.deltaTime;
+                if (waitTime <= 0)
+                {
+                    if (currentWaypointIndex < moveSpots.Length - 1)
+                    {
+                        currentWaypointIndex++;
+                    }
+
+                    waitTime = startWaitTime;
+                }
+                else
+                {
+                    waitTime -= Time.deltaTime;
+                }
             }
         }
     }
@@ -57,13 +61,16 @@ public class PlatformMoving : MonoBehaviour
     {
         if (collision.collider.CompareTag("Player"))
         {
-            collision.collider.transform.SetParent(transform);
-            MovementPlayerImproved player = collision.collider.GetComponent<MovementPlayerImproved>();
-            playerOnPlatform = true;
-            if (player != null)
+            if (isActivated)
             {
-                player.SetPlayerOnMovingPlatform(true);
-                player.SetCurrentMovingPlatform(this);
+                collision.collider.transform.SetParent(transform);
+                MovementPlayerImproved player = collision.collider.GetComponent<MovementPlayerImproved>();
+                playerOnPlatform = true;
+                if (player != null)
+                {
+                    player.SetPlayerOnMovingPlatform(true);
+                    player.SetCurrentMovingPlatform(this);
+                }
             }
 
         }

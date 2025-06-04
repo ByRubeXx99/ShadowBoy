@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
 
 public class HealthSystem : MonoBehaviour
@@ -9,8 +10,9 @@ public class HealthSystem : MonoBehaviour
     public int currentHealth;
 
     [Header("Dead")]
+    MovementPlayerImproved movementPlayerImproved = new MovementPlayerImproved();
     public bool isDead = false;
-
+    public Animator animator;
 
     [Header("Light Detection")]
     public float checkInterval = 0.2f;
@@ -28,12 +30,7 @@ public class HealthSystem : MonoBehaviour
     private void Start()
     {
         currentHealth = maxHealth;
-
-        
-
         StartCoroutine(CheckForLightDamage());
-
-        //Debug.Log("Vida inicial del jugador: " + currentHealth);
     }
 
 
@@ -43,47 +40,23 @@ public class HealthSystem : MonoBehaviour
         {
             CheckLights();
 
-            yield return new WaitForSeconds(checkInterval); 
+            yield return new WaitForSeconds(checkInterval);
         }
     }
 
     public void CheckLights()
     {
         Light2D[] allLights = Object.FindObjectsByType<Light2D>(FindObjectsSortMode.None);
-        LazerDamage[] allLazer = Object.FindObjectsByType<LazerDamage>(FindObjectsSortMode.None);
-
-        foreach (LazerDamage lazer in allLazer)
-        {
-            if (!lazer.IsActive()) continue;
-
-            if (Vector2.Distance(transform.position, lazer.transform.position) > lightDetectionRadius)
-            {
-                continue;
-            }
-
-            Vector2 dir = (transform.position - lazer.transform.position).normalized;
-            RaycastHit2D hit = Physics2D.Raycast(lazer.transform.position, dir, lightDetectionRadius);
-
-            Debug.DrawRay(lazer.transform.position, dir * lightDetectionRadius, Color.red, checkInterval);
-
-            if (hit.collider != null && hit.collider.gameObject == gameObject)
-            {
-                TakeDamage(lazer.damagePerSecond * checkInterval);
-            }
-        }
-
-
-
 
         foreach (Light2D light in allLights)
         {
             DamageLight dmg = light.GetComponent<DamageLight>();
 
-            if(dmg == null || !light.enabled)
+            if (dmg == null || !light.enabled)
             {
                 continue;
             }
-            if(Vector2.Distance(transform.position, light.transform.position) > lightDetectionRadius)
+            if (Vector2.Distance(transform.position, light.transform.position) > lightDetectionRadius)
             {
                 continue;
             }
@@ -91,12 +64,12 @@ public class HealthSystem : MonoBehaviour
             Vector2 dir = (transform.position - light.transform.position).normalized;
             RaycastHit2D hit = Physics2D.Raycast(light.transform.position, dir, lightDetectionRadius);
 
-            if(hit.collider != null && hit.collider.gameObject == gameObject)
+            if (hit.collider != null && hit.collider.gameObject == gameObject)
             {
                 TakeDamage(dmg.damagePerSecond * checkInterval);
             }
         }
-        
+
     }
 
 
@@ -105,7 +78,7 @@ public class HealthSystem : MonoBehaviour
         currentHealth -= Mathf.RoundToInt(damage);
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);   // Hace que no baje de 0 ni suba de 100 de vida
 
-        if(flashCoroutine != null)
+        if (flashCoroutine != null)
         {
             StopCoroutine(flashCoroutine);
         }
@@ -122,7 +95,7 @@ public class HealthSystem : MonoBehaviour
     {
         for (int i = 0; i < flashCount; i++)
         {
-            spriteRenderer.color =  Color.red;
+            spriteRenderer.color = Color.red;
             yield return new WaitForSeconds(flashDuration);
             spriteRenderer.color = Color.white;
             yield return new WaitForSeconds(flashDuration);
@@ -132,7 +105,9 @@ public class HealthSystem : MonoBehaviour
     public void Die()
     {
         isDead = true;
-        
+        animator.SetBool("IsDead", true);
+        GetComponent<MovementPlayerImproved>().isDead = true;
+        FindAnyObjectByType<GameOver>().ShowGameOver();
 
     }
 
@@ -140,6 +115,7 @@ public class HealthSystem : MonoBehaviour
     {
         isDead = false;
         currentHealth = maxHealth;
+        animator.SetBool("IsDead", false);
 
     }
 }

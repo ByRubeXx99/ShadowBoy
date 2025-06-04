@@ -70,6 +70,8 @@ public class MovementPlayerImproved : MonoBehaviour
     private bool playerOnMovingPlatform = false;
     private Vector2 smoothDampVelocityRef;
 
+    public bool isDead = false;
+
     private void Awake()
     {
         RB = GetComponent<Rigidbody2D>();
@@ -83,6 +85,7 @@ public class MovementPlayerImproved : MonoBehaviour
 
     private void Update()
     {
+        if (isDead) return;
         #region TIMERS
         LastOnGroundTime -= Time.deltaTime;
         LastOnWallTime -= Time.deltaTime;
@@ -267,6 +270,10 @@ public class MovementPlayerImproved : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (isDead)
+        {
+            RB.linearVelocity = Vector2.zero;
+        }
         //Handle Run
         if (!IsDashing)
         {

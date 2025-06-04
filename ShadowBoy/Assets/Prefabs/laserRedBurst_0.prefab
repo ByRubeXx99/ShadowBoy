@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1048957097128580879}
   - component: {fileID: -2272427035062193748}
   m_Layer: 0
-  m_Name: laserRedBurst_0 1
+  m_Name: laserRedBurst_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
