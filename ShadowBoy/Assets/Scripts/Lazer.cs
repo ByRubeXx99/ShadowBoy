@@ -3,7 +3,6 @@ using UnityEngine;
 public class Lazer : MonoBehaviour
 {
     private float timeTilSpawn;
-
     public float startTimeTilSpawn;
     public bool isActivated = true;
 

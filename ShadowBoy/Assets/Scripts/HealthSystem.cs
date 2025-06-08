@@ -10,7 +10,6 @@ public class HealthSystem : MonoBehaviour
     public int currentHealth;
 
     [Header("Dead")]
-    MovementPlayerImproved movementPlayerImproved = new MovementPlayerImproved();
     public bool isDead = false;
     public Animator animator;
 
@@ -30,47 +29,9 @@ public class HealthSystem : MonoBehaviour
     private void Start()
     {
         currentHealth = maxHealth;
-        StartCoroutine(CheckForLightDamage());
     }
 
 
-    IEnumerator CheckForLightDamage()
-    {
-        while (!isDead)
-        {
-            CheckLights();
-
-            yield return new WaitForSeconds(checkInterval);
-        }
-    }
-
-    public void CheckLights()
-    {
-        Light2D[] allLights = Object.FindObjectsByType<Light2D>(FindObjectsSortMode.None);
-
-        foreach (Light2D light in allLights)
-        {
-            DamageLight dmg = light.GetComponent<DamageLight>();
-
-            if (dmg == null || !light.enabled)
-            {
-                continue;
-            }
-            if (Vector2.Distance(transform.position, light.transform.position) > lightDetectionRadius)
-            {
-                continue;
-            }
-
-            Vector2 dir = (transform.position - light.transform.position).normalized;
-            RaycastHit2D hit = Physics2D.Raycast(light.transform.position, dir, lightDetectionRadius);
-
-            if (hit.collider != null && hit.collider.gameObject == gameObject)
-            {
-                TakeDamage(dmg.damagePerSecond * checkInterval);
-            }
-        }
-
-    }
 
 
     public void TakeDamage(float damage)

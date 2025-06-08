@@ -890,7 +890,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 922367750761190778, guid: 7eba2d09d588bc049b56f15696e73239, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7204472735410964740, guid: 7eba2d09d588bc049b56f15696e73239, type: 3}
       propertyPath: player
@@ -1484,8 +1484,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damagePerSecond: 100
   damageInterval: 0.5
+  blink: 0
   blinkInterval: 1
-  startOn: 1
+  isLightOn: 1
 --- !u!50 &498905805
 Rigidbody2D:
   serializedVersion: 5
@@ -1643,8 +1644,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damagePerSecond: 50
   damageInterval: 0.5
+  blink: 1
   blinkInterval: 1
-  startOn: 1
+  isLightOn: 1
 --- !u!114 &508040876 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7494100174729330467, guid: 937387ea4c191274ea772941f06e86f8, type: 3}
@@ -2429,7 +2431,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6959722538097994036, guid: 6eabe3ba962357140bdb910d99ecdfe6, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7945201245266885905, guid: 6eabe3ba962357140bdb910d99ecdfe6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2849,7 +2851,7 @@ GameObject:
   - component: {fileID: 887100706}
   - component: {fileID: 887100705}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: Game Over Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4539,7 +4541,7 @@ Transform:
   m_GameObject: {fileID: 1174208295}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -0.155, y: -17.355, z: 0}
+  m_LocalPosition: {x: -0.258, y: -17.355, z: 0}
   m_LocalScale: {x: 1.1342819, y: 1.2033432, z: 0.39896}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4694,6 +4696,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2615809543032573583, guid: afad1cec1f62929479bf387743cb80d1, type: 3}
+      propertyPath: blink
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3765232257336322231, guid: afad1cec1f62929479bf387743cb80d1, type: 3}
       propertyPath: m_Name
       value: Light 2D Variant
@@ -6546,39 +6552,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 0
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: 
-          m_MethodName: 
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: 
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - eventID: 1
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: 
-          m_MethodName: 
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: 
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+  m_Delegates: []
 --- !u!1001 &1629442763
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6587,6 +6561,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2615809543032573583, guid: afad1cec1f62929479bf387743cb80d1, type: 3}
+      propertyPath: blink
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3765232257336322231, guid: afad1cec1f62929479bf387743cb80d1, type: 3}
       propertyPath: m_Name
       value: Light 2D Variant (2)
@@ -9068,90 +9046,6 @@ MonoBehaviour:
   lazers: []
   platforms: []
   stopzones: []
---- !u!1 &2074266905
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2074266907}
-  - component: {fileID: 2074266906}
-  m_Layer: 0
-  m_Name: Light 2D (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &2074266906
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2074266905}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ComponentVersion: 2
-  m_LightType: 3
-  m_BlendStyleIndex: 1
-  m_FalloffIntensity: 0.5
-  m_Color: {r: 0.9716981, g: 0.8389619, b: 0.24292453, a: 1}
-  m_Intensity: 0.51
-  m_LightVolumeIntensity: 0.63
-  m_LightVolumeEnabled: 1
-  m_ApplyToSortingLayers: 00000000c95cacd9
-  m_LightCookieSprite: {fileID: 0}
-  m_DeprecatedPointLightCookieSprite: {fileID: 0}
-  m_LightOrder: 15
-  m_AlphaBlendOnOverlap: 0
-  m_OverlapOperation: 0
-  m_NormalMapDistance: 3
-  m_NormalMapQuality: 2
-  m_UseNormalMap: 0
-  m_ShadowsEnabled: 1
-  m_ShadowIntensity: 0.75
-  m_ShadowSoftness: 0.3
-  m_ShadowSoftnessFalloffIntensity: 0.5
-  m_ShadowVolumeIntensityEnabled: 0
-  m_ShadowVolumeIntensity: 0.75
-  m_LocalBounds:
-    m_Center: {x: 0, y: -0.00000011920929, z: 0}
-    m_Extent: {x: 0.9985302, y: 0.99853027, z: 0}
-  m_PointLightInnerAngle: 0
-  m_PointLightOuterAngle: 226.75531
-  m_PointLightInnerRadius: 5.1167974
-  m_PointLightOuterRadius: 9.6634655
-  m_ShapeLightParametricSides: 5
-  m_ShapeLightParametricAngleOffset: 0
-  m_ShapeLightParametricRadius: 1
-  m_ShapeLightFalloffSize: 0.5
-  m_ShapeLightFalloffOffset: {x: 0, y: 0}
-  m_ShapePath:
-  - {x: -0.5, y: -0.5, z: 0}
-  - {x: 0.5, y: -0.5, z: 0}
-  - {x: 0.5, y: 0.5, z: 0}
-  - {x: -0.5, y: 0.5, z: 0}
---- !u!4 &2074266907
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2074266905}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0.93029916, w: 0.36680183}
-  m_LocalPosition: {x: 13.93, y: 2.31, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -136.963}
 --- !u!1 &2075182792
 GameObject:
   m_ObjectHideFlags: 0
@@ -9226,7 +9120,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -643015479
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 1
   m_Sprite: {fileID: -1146011160453073346, guid: d62070d073d93f747b8b629ed9298901, type: 3}
   m_Color: {r: 0.4339623, g: 0.4339623, b: 0.4339623, a: 1}
@@ -9247,6 +9141,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2615809543032573583, guid: afad1cec1f62929479bf387743cb80d1, type: 3}
+      propertyPath: blink
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3765232257336322231, guid: afad1cec1f62929479bf387743cb80d1, type: 3}
       propertyPath: m_Name
       value: Light 2D Variant (1)
@@ -9485,6 +9383,8 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1551537388}
+  - {fileID: 1822318191}
+  - {fileID: 622189620}
   - {fileID: 1361555968}
   - {fileID: 1077121595}
   - {fileID: 117238248}
@@ -9505,7 +9405,6 @@ SceneRoots:
   - {fileID: 1084397330}
   - {fileID: 1505699884}
   - {fileID: 332627109}
-  - {fileID: 2074266907}
   - {fileID: 505287103}
   - {fileID: 1890377779}
   - {fileID: 2036088574}
@@ -9518,8 +9417,6 @@ SceneRoots:
   - {fileID: 1746939754}
   - {fileID: 367816984}
   - {fileID: 1048546909}
-  - {fileID: 1822318191}
-  - {fileID: 622189620}
   - {fileID: 276377995}
   - {fileID: 1744370939}
   - {fileID: 1785791030}
