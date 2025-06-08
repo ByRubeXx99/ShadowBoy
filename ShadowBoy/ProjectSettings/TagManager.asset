@@ -49,8 +49,14 @@ TagManager:
   - name: Plataforma movil
     uniqueID: 1276789429
     locked: 0
+  - name: Background
+    uniqueID: 158983387
+    locked: 0
   - name: Player
     uniqueID: 3651951817
+    locked: 0
+  - name: Foreground
+    uniqueID: 3813939285
     locked: 0
   m_RenderingLayers:
   - Default
