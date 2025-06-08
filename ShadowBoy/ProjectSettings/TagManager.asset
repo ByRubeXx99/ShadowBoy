@@ -58,11 +58,5 @@ TagManager:
   - name: Foreground
     uniqueID: 3813939285
     locked: 0
-  - name: Map
-    uniqueID: 1291042323
-    locked: 0
-  - name: Lights visibles
-    uniqueID: 574074247
-    locked: 0
   m_RenderingLayers:
   - Default
